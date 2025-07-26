@@ -23,7 +23,6 @@ let birdRadius = 20;
 let velocity = 0;
 let gravity = 0.5;
 let isGameOver = false;
-let isPaused = false;
 let hasStarted = false;
 let score = 0;
 let highScore = 0;
@@ -36,7 +35,7 @@ const pipeSpeed = 2;
 
 // Pipe generator
 setInterval(() => {
-  if (!isGameOver && hasStarted && !isPaused) {
+  if (!isGameOver && hasStarted) {
     const topHeight = Math.random() * (canvas.height - pipeGap - 150) + 50;
     pipes.push({ x: canvas.width, top: topHeight, passed: false });
   }
@@ -68,7 +67,7 @@ function draw() {
   ctx.fill();
 
   // Physics
-  if (hasStarted && !isPaused && !isGameOver) {
+  if (hasStarted && !isGameOver) {
     velocity += gravity;
     birdY += velocity;
   }
@@ -76,7 +75,7 @@ function draw() {
   // Pipes
   ctx.fillStyle = "green";
   pipes.forEach(pipe => {
-    if (!isPaused && hasStarted && !isGameOver) pipe.x -= pipeSpeed;
+    if (hasStarted && !isGameOver) pipe.x -= pipeSpeed;
 
     // Top pipe
     ctx.fillRect(pipe.x, 0, pipeWidth, pipe.top);
@@ -121,12 +120,6 @@ function draw() {
     ctx.fillText("Tap or Space to Start", canvas.width / 2 - 140, canvas.height / 2);
   }
 
-  if (isPaused && hasStarted && !isGameOver) {
-    ctx.fillStyle = "orange";
-    ctx.font = "32px Arial";
-    ctx.fillText("Paused", canvas.width / 2 - 50, canvas.height / 2);
-  }
-
   if (isGameOver) {
     ctx.fillStyle = "red";
     ctx.font = "36px Arial";
@@ -144,14 +137,13 @@ function flap() {
     resetGame();
   } else {
     hasStarted = true;
-    if (!isPaused) velocity = -8;
+    velocity = -8;
   }
 }
 
 document.addEventListener("keydown", e => {
   if (e.code === "Space") flap();
   if (e.code === "Enter" && isGameOver) resetGame();
-  if (e.code === "KeyP") isPaused = !isPaused;
 });
 
 canvas.addEventListener("touchstart", flap);
