@@ -8,29 +8,15 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { background: #70c5ce; font-family: Arial, sans-serif; }
     canvas { display: block; margin: auto; background: #70c5ce; }
-    #pauseBtn {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      padding: 10px 15px;
-      font-size: 16px;
-      background: #fff;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      z-index: 1;
-    }
   </style>
 </head>
 <body>
 
-<button id="pauseBtn">Pause</button>
 <canvas id="gameCanvas" width="400" height="600"></canvas>
 
 <script>
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
-const pauseBtn = document.getElementById("pauseBtn");
 
 let birdY = canvas.height / 2;
 let birdRadius = 20;
@@ -170,9 +156,6 @@ document.addEventListener("keydown", e => {
 
 canvas.addEventListener("touchstart", flap);
 canvas.addEventListener("mousedown", flap);
-pauseBtn.addEventListener("click", () => {
-  if (hasStarted && !isGameOver) isPaused = !isPaused;
-});
 
 draw();
 </script>
